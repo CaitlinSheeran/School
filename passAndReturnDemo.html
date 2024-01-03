@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="utf-8">
+ <title>Pass &amp; Return</title>
+<!-- passAndReturnDemo.html - Demonstrate how to use pass parameters and return an object
+  Peter Johnson - peterk@webExplorations.com
+  Written:   02-11-14 
+  Revised:   09-28-14 PKJ restructure code into different functions
+             01-27-16 PKJ simplify code and comments. 
+  -->
+ <script>
+    
+ /* ************************************
+  * showWindChill( ) - Display the windchill on the screen
+  * Parameters:   none
+  * Returns:      none
+ ******************************************* */
+ function showWindChill( )
+ {
+ 
+    // Initialize variables
+    var windSpeed = "";      
+    var temperature = "";
+    var result;             
+
+    // Hardcode in values for now. 
+    // Later, get input from user using an HTML form
+    windSpeed = 5;
+    temperature = -20;
+    
+    // Calc the calcultion function 
+    result = calcWindChill(windSpeed, temperature);
+       
+    // Display the results 
+    // Locate the empty block on the page
+    lblResultNode = document.getElementById("lblResult");
+    // Add text to this spot using innerHTML 
+    lblResultNode.innerHTML = "<p>The windchill at "
+      + temperature + "F and " + windSpeed + "mph is " + result + ".</p>";
+ } // end of showWindChill( )
+ 
+ 
+ 
+ /* ************************************
+  * calcWindChill( ) - Calculate the windchill based on windspeed and temperature
+  * Parameters:   speed  - windspeed in mph
+  *               temp   - temperature as fahrenheit
+  * Returns:      windchill temperature
+  *  
+  * Reference: http://www.nws.noaa.gov/os/windchill/windchillfaq.shtml
+  * Sample data: 0F at 5mph has a windchill of -5
+  *             20F at 5mph has a windchill of  13
+  *            -20F at 5mph has a windchill of -34
+  * Windchill (ºF) = 35.74 + 0.6215T - 35.75(V^0.16) + 0.4275T(V^0.16)
+  * Where: T = Air Temperature (F)
+  * V = Wind Speed (mph)
+  * ^ = raised to a power (exponential)
+  ****************************************** */
+ function calcWindChill(speed, temp)
+ {
+     var windchill = 0;
+     var windSpeedExponent = Math.pow(speed,0.16);
+     windchill = 35.74 + (0.6215 * temp) - 35.75*windSpeedExponent + (0.4275 * temp)*windSpeedExponent;
+     windchill = Math.round(windchill);
+     return windchill;
+ } // end of function calcWindChill( )
+ 
+ </script>
+ 
+ <style>
+  body {
+  background:  #EEE;
+  font-size:   16px;
+  font-family: helvetica, arial, sans-serif;
+  }
+  
+  h1 {
+  border:  1px #000080 solid;
+  padding: 10px;
+  background:  #AAA;
+  color:    white;
+  }
+  
+  h2 {
+  background: #DDD;
+  color:      #000080;
+  padding:    10px;
+  border:     1px #000080 solid;
+  }
+  
+  li {
+  margin:     1.5em 0 0 0;
+  }
+  
+  #frame {
+  max-width:   800px;
+  margin:      auto;
+  border:      1px solid #000080;
+  padding:     20px;
+  }
+ </style>
+</head>
+<body>
+<div id="frame">
+   <h1>Calculate Wind Chill</h1>
+
+   <input type="button" name="btnCalc" value="Calculate Windchill" onClick="showWindChill( );" />
+   
+   <!-- Create an empty block used to display the data.
+        HTML and text will be inserted in between the <div> and </div> tags. -->
+   <div id="lblResult"></div>
+
+</frame>
+</body>
+</html>
